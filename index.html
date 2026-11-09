@@ -1,0 +1,574 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Graficación | Modelos 3D</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/box.svg">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --background: #080d1a;
+            --surface: #111a2d;
+            --surface-hover: #18243b;
+            --primary: #7068ff;
+            --secondary: #00c2ff;
+            --text: #f3f5ff;
+            --muted: #9aa8c2;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(ellipse at 15% 10%, rgba(83, 74, 255, .15), transparent 40%),
+                radial-gradient(ellipse at 85% 80%, rgba(0, 194, 255, .10), transparent 40%),
+                var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navegación */
+        .navbar {
+            background: rgba(8, 13, 26, .85);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            font-size: 22px;
+            color: white;
+        }
+
+        .brand-name {
+            font-weight: 800;
+            letter-spacing: .5px;
+        }
+
+        .brand-subtitle {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* Encabezado */
+        .hero {
+            padding: 75px 0 50px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(112,104,255,.12);
+            border: 1px solid rgba(112,104,255,.35);
+            border-radius: 50px;
+            color: #aaa5ff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 18px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #8580ff, #00caff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--muted);
+            max-width: 650px;
+            margin: auto;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        /* Tarjetas */
+        .projects-section {
+            padding: 15px 0 75px;
+            flex: 1;
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .section-description {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        .project-card {
+            height: 100%;
+            padding: 25px;
+            background: linear-gradient(145deg, #141e33, #101829);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 18px;
+            transition: all .3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            background: var(--surface-hover);
+            border-color: rgba(112,104,255,.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,.25);
+        }
+
+        .project-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 14px;
+            background: rgba(112,104,255,.15);
+            color: #9993ff;
+            font-size: 25px;
+            margin-bottom: 22px;
+        }
+
+        .project-number {
+            color: #777f9b;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 9px;
+        }
+
+        .project-card h5 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .project-card p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+            min-height: 42px;
+        }
+
+        .btn-project {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid rgba(112,104,255,.45);
+            border-radius: 10px;
+            color: #c4c1ff;
+            background: rgba(112,104,255,.10);
+            font-size: 13px;
+            font-weight: 600;
+            transition: .3s;
+        }
+
+        .btn-project:hover {
+            color: white;
+            background: linear-gradient(90deg, #7068ff, #4b91ff);
+            border-color: transparent;
+        }
+
+        .btn-project i {
+            margin-left: 7px;
+        }
+
+        /* Pie de página */
+        footer {
+            background: rgba(5, 9, 19, .8);
+            border-top: 1px solid rgba(255,255,255,.08);
+            padding: 30px 0;
+        }
+
+        .footer-title {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .footer-info {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.9;
+        }
+
+        .footer-info strong {
+            color: #dce3f5;
+            font-weight: 600;
+        }
+
+        .copyright {
+            color: #78859e;
+            font-size: 11px;
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255,255,255,.07);
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 55px 15px 40px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1px;
+            }
+
+            .project-card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container py-2">
+
+            <a class="navbar-brand d-flex align-items-center gap-3 text-white" href="#">
+                <div class="brand-icon">
+                    <i class="bi bi-boxes"></i>
+                </div>
+
+                <div>
+                    <div class="brand-name">3D GRAPHICS</div>
+                    <div class="brand-subtitle">THREE.JS PROJECT</div>
+                </div>
+            </a>
+
+            <span class="badge rounded-pill text-bg-primary px-3 py-2">
+                <i class="bi bi-code-slash me-1"></i> Graficación
+            </span>
+
+        </div>
+    </nav>
+
+
+    <!-- HERO -->
+    <header class="hero">
+        <div class="container">
+
+            <span class="hero-badge">
+                <i class="bi bi-stars me-2"></i>
+                PROYECTO ACADÉMICO · 2026
+            </span>
+
+            <h1>
+                Exploración de <span class="gradient-text">Modelos 3D</span>
+            </h1>
+
+            <p>
+                Plataforma de demostración de gráficos tridimensionales
+                desarrollada con Three.js. Explora diferentes formatos,
+                geometrías y técnicas de visualización 3D.
+            </p>
+
+        </div>
+    </header>
+
+
+    <!-- PROJECTS -->
+    <main class="projects-section">
+        <div class="container">
+
+            <div class="mb-4">
+                <h2 class="section-title">Demostraciones disponibles</h2>
+                <p class="section-description">
+                    Selecciona cualquiera de los siete proyectos para iniciar
+                    su visualización.
+                </p>
+            </div>
+
+            <div class="row g-4">
+
+                <!-- 1. FBX -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="bi bi-box"></i>
+                        </div>
+
+                        <div class="project-number">PROYECTO 01</div>
+
+                        <h5>FBX Loader</h5>
+
+                        <p>
+                            Carga y visualización de modelos tridimensionales
+                            en formato FBX.
+                        </p>
+
+                        <a href="./examples/webgl_loader_fbx.html"
+                           class="btn btn-project">
+                            Abrir demostración
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- 2. MINECRAFT -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="bi bi-grid-3x3"></i>
+                        </div>
+
+                        <div class="project-number">PROYECTO 02</div>
+
+                        <h5>Minecraft Geometry</h5>
+
+                        <p>
+                            Generación de geometrías y terrenos mediante
+                            estructuras de bloques tridimensionales.
+                        </p>
+
+                        <a href="./examples/webgl_geometry_minecraft.html"
+                           class="btn btn-project">
+                            Abrir demostración
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- 3. COLLADA KINEMATICS -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="bi bi-robot"></i>
+                        </div>
+
+                        <div class="project-number">PROYECTO 03</div>
+
+                        <h5>Collada Kinematics</h5>
+
+                        <p>
+                            Visualización de modelos articulados y
+                            simulación de movimientos cinemáticos.
+                        </p>
+
+                        <a href="./examples/webgl_loader_collada_kinematics.html"
+                           class="btn btn-project">
+                            Abrir demostración
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- 4. COLLADA SKINNING -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="bi bi-person-arms-up"></i>
+                        </div>
+
+                        <div class="project-number">PROYECTO 04</div>
+
+                        <h5>Collada Skinning</h5>
+
+                        <p>
+                            Representación de modelos articulados,
+                            esqueletos y deformaciones de personajes.
+                        </p>
+
+                        <a href="./examples/webgl_loader_collada_skinning.html"
+                           class="btn btn-project">
+                            Abrir demostración
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- 5. COLLADA -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="bi bi-boxes"></i>
+                        </div>
+
+                        <div class="project-number">PROYECTO 05</div>
+
+                        <h5>Collada Loader</h5>
+
+                        <p>
+                            Importación y visualización de modelos
+                            tridimensionales en formato COLLADA.
+                        </p>
+
+                        <a href="./examples/webgl_loader_collada.html"
+                           class="btn btn-project">
+                            Abrir demostración
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- 6. GLTF AVIF -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="bi bi-image"></i>
+                        </div>
+
+                        <div class="project-number">PROYECTO 06</div>
+
+                        <h5>GLTF AVIF</h5>
+
+                        <p>
+                            Carga de escenas GLTF con recursos de imagen
+                            optimizados mediante tecnología AVIF.
+                        </p>
+
+                        <a href="./examples/webgl_loader_gltf_avif.html"
+                           class="btn btn-project">
+                            Abrir demostración
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+
+                <!-- 7. GLTF COMPRESSED -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <div class="project-icon">
+                            <i class="bi bi-file-zip"></i>
+                        </div>
+
+                        <div class="project-number">PROYECTO 07</div>
+
+                        <h5>GLTF Compressed</h5>
+
+                        <p>
+                            Visualización de modelos GLTF utilizando
+                            técnicas avanzadas de compresión.
+                        </p>
+
+                        <a href="./examples/webgl_loader_gltf_compressed.html"
+                           class="btn btn-project">
+                            Abrir demostración
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+
+            <div class="row g-4">
+
+                <div class="col-md-6">
+                    <div class="footer-title">
+                        <i class="bi bi-mortarboard-fill me-2"></i>
+                        Información académica
+                    </div>
+
+                    <div class="footer-info">
+                        <strong>Tecnológico Nacional de México</strong><br>
+                        Campus: Instituto Tecnológico de Pachuca<br>
+                        Materia: Graficación
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="footer-title">
+                        <i class="bi bi-person-circle me-2"></i>
+                        Datos del creador
+                    </div>
+
+                    <div class="footer-info">
+                        <strong>Itzel Mendoza Sánchez</strong><br>
+                        No. de control: 26201715<br>
+                        Fecha de consulta:
+                        <strong id="fecha"></strong>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="copyright">
+                © <span id="year"></span> Itzel Mendoza Sánchez.
+                Todos los derechos reservados.
+                <br>
+                Proyecto académico de Graficación · Three.js
+            </div>
+
+        </div>
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Fecha actualizada automáticamente al abrir el sitio
+        const fechaActual = new Date();
+
+        document.getElementById("fecha").textContent =
+            fechaActual.toLocaleDateString("es-MX", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric"
+            });
+
+        // Año dinámico del copyright
+        document.getElementById("year").textContent =
+            fechaActual.getFullYear();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
